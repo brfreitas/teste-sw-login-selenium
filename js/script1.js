@@ -3,11 +3,15 @@ users[0] = {login:"admin", senha:"admin", CPF:'', data:'22/12/1978', lembrete:'C
 users[1] = {login:"rafael.melo", senha:"12345", CPF:'18773103012', data:'01/10/1988', lembrete:'Cachorro'};
 users[2] = {login:"maria.ribeiro", senha:"112233", CPF:'67873396746', data:'', lembrete:''};
  
+function lpad(s) { return (s < 10) ? '0' + s : s; }
+
 $(document).ready(function(){
 	$("#button").click(function(){
 		login = $('#login').val();
 		senhaatual = $('#senhaatual').val().trim();
-		data = $('#datanascimento').val();
+		dataSplit = $('#datanascimento').val().split('-');
+		dataObj = new Date(dataSplit[0], dataSplit[1] - 1, dataSplit[2]);
+		data = [lpad(dataObj.getDate()), lpad(dataObj.getMonth()+1), dataObj.getFullYear()].join('/')
 		cpf = $('#cpf').val().trim();
 		novasenha = $('#senhanova').val().trim();
 		confirmacao = $('#confirmasenha').val();
@@ -64,7 +68,7 @@ $(document).ready(function(){
 
 		cpfEmOutroUser = false;
 		for(i = 0; i < users.length; i++){					
-			cpfEmOutroUser = (cpf == cpfCadastrado) && (login != users[i].login);
+			cpfEmOutroUser = (cpf == users[i].CPF) && (login != users[i].login);
 			if (cpfEmOutroUser){
 				alert("1 - CPF já informado para outro usuario");
 				return;
